@@ -8,6 +8,6 @@ if ( isButtonPressed && capacity > amountWater ) { // ボタンが押されて�
     print("タンクが満水なので運転できません")
 } else if ( isButtonPressed || capacity == amountWater) { // ボタンは押されてないけど、タンクの容量と現在の水量が一致（満水）している
     print("タンクが満水です")
-} else { // ボタンが押されてない
-    print("（なにもしない）")
+} else { // 運転を停止
+    print("運転を停止します")
 }
