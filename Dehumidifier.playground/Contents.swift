@@ -6,6 +6,10 @@ PlaygroundPage.current.needsIndefiniteExecution = true
 var isButtonPressed = true
 let capacity = 10 //タンクの容量 ml
 var amountWater = 9 //現在の水量 ml
+var isTankRemoval = false // タンクの取り外されているか true=取り外されている
+var filterNumberOfUses = 29 // フィルター使用日数
+var limitFilterNumberOfUses = 30 // フィルター最大使用日数
+
 
 class Alarm {
     
@@ -33,19 +37,19 @@ class Alarm {
     }
 }
 
-if ( isButtonPressed && amountWater < capacity) {
+if isTankRemoval {
+    print("タンクが取り外されています")
+} else if ( isButtonPressed && capacity == amountWater ) { // ボタンが押されて、タンクの容量と現在の水量が一致（満水）している
+    print("タンクが満水なので運転できません")
+} else if ( filterNumberOfUses == limitFilterNumberOfUses ) { //    print("フィルターを交換してください")
+    print("フィルターを交換してください")
+} else if ( capacity == amountWater) { // ボタンは押されてないけど、タンクの容量と現在の水量が一致（満水）している
+    print("タンクが満水です")
+} else if ( isButtonPressed && amountWater < capacity && filterNumberOfUses < limitFilterNumberOfUses) {
+    print("運転を開始します")
     let alarm = Alarm()
     alarm.start()
 } else {
     print("（ボタンが押されていません）")
-}
-
-if ( isButtonPressed && capacity > amountWater ) { // ボタンが押されて、タンクの容量が現在の水量より多い
-    print("運転を開始します")
-} else if ( isButtonPressed && capacity == amountWater ) { // ボタンが押されて、タンクの容量と現在の水量が一致（満水）している
-    print("タンクが満水なので運転できません")
-} else if ( isButtonPressed || capacity == amountWater) { // ボタンは押されてないけど、タンクの容量と現在の水量が一致（満水）している
-    print("タンクが満水です")
-} else {
 }
 
