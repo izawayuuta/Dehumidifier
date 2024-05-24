@@ -3,11 +3,11 @@ import PlaygroundSupport
 
 PlaygroundPage.current.needsIndefiniteExecution = true
 
-var isButtonPressed = true
+let isButtonPressed = true
 let capacity = 10 //タンクの容量 ml
-var amountWater = 0 //現在の水量 ml
-var isTankRemoval = false // タンクの取り外されているか true=取り外されている
-var filterNumberOfUses = 29 // フィルター使用日数
+let amountWater = 0 //現在の水量 ml
+let isTankRemoval = false // タンクの取り外されているか true=取り外されている
+let filterNumberOfUses = 29 // フィルター使用日数
 let limitFilterNumberOfUses = 30 // フィルター最大使用日数
 
 class Dehumidifier {
@@ -29,7 +29,13 @@ class Dehumidifier {
         self.filterNumberOfUses = filterNumberOfUses
     }
     
-    func checkStatus() {
+    func checkStatus() -> Bool {
+        var ischeck = false
+        guard isButtonPressed && amountWater < capacity && filterNumberOfUses < limitFilterNumberOfUses else {
+             ischeck = true
+            print("運転を開始します")
+            return ischeck
+        }
         if isTankRemoval {
             print("タンクが取り外されています")
         } else if ( isButtonPressed && capacity == amountWater ) {
@@ -38,14 +44,20 @@ class Dehumidifier {
             print("フィルターを交換してください")
         } else if ( amountWater >= capacity ) {
             print("タンクが満水です")
-        } else if ( isButtonPressed && amountWater < capacity && filterNumberOfUses < limitFilterNumberOfUses ) {
-            print("運転を開始します")
-            start()
         } else {
             print("（ボタンが押されていません）")
         }
+        return ischeck
     }
+    
     func start() {
+        guard checkStatus() else {
+            return
+        }
+        startTimer()
+    }
+    
+    func startTimer() {
         timer = Timer.scheduledTimer(
             timeInterval: 1,
             target: self,
